@@ -2,20 +2,33 @@
 # takes a file with an incorrect delimiter and corrects it with a comma ,
 import os
 import argparse
+import csv
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument('original_file')
 parser.add_argument('new_file')
+parser.add_argument('--in-delimiter', default="|")
+parser.add_argument('--in-quote', default='"')
+
 args = parser.parse_args()
-original_file = args.original_file
-new_file = args.new_file
 
+with open(args.original_file) as o:
+    dialect = csv.Sniffer().sniff(o.read())
 
-write_file = open(new_file, 'w')
+if args.in_delimiter:
+    delimiter = args.in_delimiter
+else:
+    delimiter = dialect.delimiter
 
-with open(original_file) as o:
-    for line in o.readlines():
-        write_file.write(line.replace("|", ","))
+if args.in_quote:
+    quotechar = dialect.quotechar
+else:
+    quotechar = dialect.quotechar
 
-write_file.close()
+with open(args.original_file) as o:
+    rows = list(csv.reader(o, delimiter = delimiter, quotechar = quote_char))
+
+with open(args.new_file, 'w', newline='') as n:
+    writer = csv.writer(n)
+    writer.writerows(rows)
