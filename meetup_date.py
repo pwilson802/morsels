@@ -22,7 +22,3 @@ def meetup_date(year, month, nth=4, weekday=3):
             if count == nth:
                 day = week_range[weekday]
     return datetime.date(year, month, day)
-
-    # for day in range(week_start[nth],week_start[nth]+7):
-    #     if datetime.date(year,month,day).weekday() == weekday:
-    #         return datetime.date(year, month, day)
